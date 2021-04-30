@@ -1,0 +1,136 @@
+.modal-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 10;
+}
+.modal-cover {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.4);
+  animation-duration: 1s;
+  animation-name: modalCover;
+  transition: all 0.5s ease 0s;
+  z-index: 1;
+  &.modal-cover-hide {
+    opacity: 0;
+  }
+}
+@keyframes modalCover {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.modal-btn-block {
+  display: flex;
+  justify-content: center;
+}
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  width: 520px;
+  min-height: 250px;
+  background: #e74c3c;
+  color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 15;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+  animation-duration: 0.5s;
+  animation-name: modalBody;
+  transition: all 0.3s ease 0s;
+}
+.modal-hide {
+  opacity: 0;
+  transform: translate(-50%, -20%);
+}
+@keyframes modalBody {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -150%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -70%) scale(1);
+  }
+}
+.modal-header {
+  background: #d44637;
+  height: 70px;
+  font-size: 20px;
+  padding: 20px 30px;
+  text-align: center;
+  position: relative;
+}
+.modal-close {
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  top: 50%;
+  right: 30px;
+  transform: translateY(-50%);
+  z-index: 2;
+  transition: all 0.5s ease 0s;
+  cursor: pointer;
+  &::after {
+    content: "";
+    width: 36px;
+    height: 2px;
+    background: rgb(250, 250, 250);
+    left: -5px;
+    top: 47%;
+    position: absolute;
+    transform: rotate(45deg);
+    transition: all 0.5s ease 0s;
+  }
+  &:hover {
+    &::after {
+      transform: rotate(-45deg);
+    }
+  }
+  &::before {
+    content: "";
+    width: 36px;
+    height: 2px;
+    background: rgb(250, 250, 250);
+    left: -5px;
+    top: 47%;
+    position: absolute;
+    transform: rotate(-45deg);
+    transition: all 0.5s ease 0s;
+  }
+  &:hover {
+    &::before {
+      transform: rotate(45deg);
+    }
+  }
+}
+.modal-text {
+  padding: 20px 70px;
+  text-align: center;
+  flex: 1 1 auto;
+  font-size: 16px;
+  line-height: 25px;
+}
+.modal-actions {
+  padding: 20px 30px;
+}
+.btn-modal {
+  height: 40px;
+  min-width: 100px;
+  background: #b3382c;
+  border-radius: 5px;
+  margin: 0 5px;
+  font-size: 16px;
+}

@@ -1,0 +1,65 @@
+.container {
+  max-width: 1000px;
+  margin: 0px auto;
+  min-height: 100vh;
+  background: rgb(221, 204, 183);
+  padding-top: 20px;
+  animation-duration: 2s;
+  animation-name: containerShow;
+}
+.content-block {
+  margin: 20px 40px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.274);
+  background: rgb(251, 245, 238);
+  border-radius: 5px;
+  overflow: hidden;
+  padding: 20px;
+  // transform: translateY(-150%);
+  // animation-delay: 2s;
+  animation-duration: 2s;
+  animation-name: showTopBlock;
+}
+@keyframes containerShow {
+  from {
+    max-width: 100px;
+    opacity: 0;
+  }
+  to {
+    max-width: 1000px;
+    opacity: 1;
+  }
+}
+@keyframes showTopBlock {
+  from {
+    margin: -50px 40px;
+    opacity: 0;
+    // transform: translateY(-150%);
+  }
+  to {
+    margin: 20px 40px;
+    opacity: 1;
+    // transform: translateY(150%);
+  }
+}
+.btn-block {
+  display: flex;
+  justify-content: center;
+}
+button {
+  min-width: 250px;
+  padding: 10px 30px;
+  height: 60px;
+  border: none;
+  background: rgb(255, 157, 44);
+  color: #fff;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0 2px;
+  transition: all 0.3s ease 0s;
+  // border: 1px solid transparent;
+}
+button:hover {
+  background-color: #9c2e24;
+  // border: 1px solid rgb(131, 131, 131);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.363);
+}
