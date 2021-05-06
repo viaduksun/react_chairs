@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./scss/modal.scss";
+import PropTypes from 'prop-types';
 
 export class Modal extends Component {  
   render() {
@@ -27,5 +27,16 @@ export class Modal extends Component {
     )
   }
 }
-
+Modal.propTypes = {
+  header: PropTypes.string,
+  text: PropTypes.string,
+  closeButton: PropTypes.bool,
+  onModalClose: PropTypes.func,  
+  actions: PropTypes.node.isRequired,
+}
+Modal.propTypes.defaultProps = {
+  header: "Modal window",
+  closeButton: true,
+  onModalClose: ()=>{},
+}
 export default Modal

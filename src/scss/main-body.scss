@@ -1,0 +1,20 @@
+.main-body {
+  margin-top: 2px;
+  min-height: 1000px;
+  background: rgb(110, 110, 110);
+  padding: 30px;
+}
+.products-field {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.main-body-text {
+  font-size: 30px;
+  text-align: center;
+  margin: 30px;
+  color: #fff;
+  text-transform: lowercase;
+  font-style: italic;
+}

@@ -1,11 +1,10 @@
 .container {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0px auto;
-  min-height: 100vh;
-  background: rgb(221, 204, 183);
-  padding-top: 20px;
-  animation-duration: 2s;
-  animation-name: containerShow;
+  // background: rgb(221, 204, 183);
+
+  // animation-duration: 2s;
+  // animation-name: containerShow;
 }
 .content-block {
   margin: 20px 40px;
@@ -25,7 +24,7 @@
     opacity: 0;
   }
   to {
-    max-width: 1000px;
+    max-width: 1100px;
     opacity: 1;
   }
 }

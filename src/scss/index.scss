@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: rgb(245, 224, 198);
+  background: rgb(24, 24, 24);
 }
 p {
   margin: 0;
@@ -15,3 +15,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+h2 {
+  font-size: 30px;
+  color: #fff;
+}
+@import "null";
+@import "App";
+@import "header";
+@import "main-body";
+@import "modal";
+@import "product-card";

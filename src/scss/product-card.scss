@@ -1,0 +1,75 @@
+.product-card {
+  background: rgb(219, 219, 219);
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.431);
+  min-height: 500px;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.card-header {
+  background: rgb(255, 255, 255);
+  min-height: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  img {
+    display: block;
+    width: 60%;
+    margin: 0px auto;
+  }
+}
+.card-body {
+  padding: 10px 20px;
+}
+.card-text {
+}
+.card-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  min-height: 40px;
+}
+.card-data {
+  display: flex;
+  background: rgb(238, 238, 238);
+  min-height: 25px;
+  line-height: 24px;
+  margin-bottom: 2px;
+  padding-left: 10px;
+}
+.card-data-name {
+  width: 50%;
+}
+.card-data-value {
+  text-align: center;
+}
+.card-options {
+  margin: 15px 0 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+.card-options-favorites {
+  cursor: pointer;
+  width: 50%;
+  display: flex;
+  height: 35px;
+  p {
+    font-size: 12px;
+    line-height: 35px;
+  }
+}
+.card-options-star {
+  margin-right: 10px;
+  img {
+    height: 100%;
+  }
+}
+.btn-add-to-card {
+  min-width: 125px;
+  height: 35px;
+  padding: 5px;
+  font-size: 16px;
+}

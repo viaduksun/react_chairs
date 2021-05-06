@@ -1,0 +1,99 @@
+
+  [
+    { 
+      "id": 1,
+      "name": "Компьютерное кресло GTRacerX-0715-blue",
+      "image": "./img/GTRacerX-0715-blue.jpg",
+      "color": "blue",
+      "price": 18200,
+      "article": 522334
+    },
+    { 
+      "id": 2,
+      "name": "Компьютерное кресло Special4you ExtremeRace",
+      "image": "./img/Special4youExtremeRace-green.jpg",
+      "color": "green",
+      "price": 15500,
+      "article": 722654
+    },
+    { 
+      "id": 3,
+      "name": "Компьютерное кресло Hator Hypersport V2",
+      "image": "./img/HatorHypersportV2-black.jpg",
+      "color": "black",
+      "price": 7500,
+      "article": 6722884
+    },
+    { 
+      "id": 4,
+      "name": "Компьютерное кресло GT Racer X-2527",
+      "image": "./img/HatorHypersportV2-black.jpg",
+      "color": "black",
+      "price": 9500,
+      "article": 782334
+    },
+    { 
+      "id": 5,
+      "name": "Компьютерное кресло Hator Apex",
+      "image": "./img/Hator-apex-yellow.jpg",
+      "color": "black",
+      "price": 12250,
+      "article": 55334
+    },
+    { 
+      "id": 6,
+      "name": "Компьютерное кресло Hator Arc",
+      "image": "./img/Hator-arc-brown.jpg",
+      "color": "brown",
+      "price": 11500,
+      "article": 127334
+    },
+    { 
+      "id": 7,
+      "name": "Компьютерное кресло Aklas Strik",
+      "image": "./img/AklasStrik-yellow.jpeg",
+      "color": "brown",
+      "price": 15700,
+      "article": 922334
+    },
+    { 
+      "id": 8,
+      "name": "Компьютерное кресло Cougar Armor S",
+      "image": "./img/Hator-arc-brown.jpg",
+      "color": "brown",
+      "price": 17500,
+      "article": 442334
+    },
+    { 
+      "id": 9,
+      "name": "Компьютерное кресло Aerocool Duke",
+      "image": "./img/9_AerocoolDuke-brown.jpg",
+      "color": "brown",
+      "price": 14500,
+      "article": 544334
+    },
+    { 
+      "id": 10,
+      "name": "Компьютерное кресло GT Racer X-2612",
+      "image": "./img/10-RacerX-2612-red.jpg",
+      "color": "red",
+      "price": 12500,
+      "article": 422334
+    },
+    { 
+      "id": 11,
+      "name": "Компьютерное кресло GT Racer X-2612",
+      "image": "./img/10-RacerX-2612-blue.jpg",
+      "color": "blue",
+      "price": 12500,
+      "article": 224334
+    },
+    { 
+      "id": 12,
+      "name": "Компьютерное кресло GT Racer X-2612",
+      "image": "./img/10-RacerX-2612-green.jpg",
+      "color": "green",
+      "price": 12500,
+      "article": 132334
+    }
+  ]
