@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-export class CartModal extends Component {  
-  render() {
-    const {header, closeButton, actions, onModalClose, product } = this.props;
+const CartModal = ({header, closeButton, actions, onModalClose, product }) => { 
+   
     return (
         <>
           <div className="modal-cover" onClick={(event)=>{
@@ -45,7 +44,8 @@ export class CartModal extends Component {
       </>
     )
   }
-}
+
+
 CartModal.propTypes = {
   header: PropTypes.string.isRequired,
   closeButton: PropTypes.bool,
@@ -58,4 +58,4 @@ CartModal.propTypes = {
   // closeButton: true,
   // onModalClose: ()=>{},
 // }
-export default CartModal
+export default CartModal;

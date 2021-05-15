@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-export class Modal extends Component {  
-  render() {
-    const {header, closeButton, text, actions, onModalClose } = this.props;
+const Modal = ({header, closeButton, text, actions, onModalClose }) => {  
+
     return (
         <>
           <div className="modal-cover" onClick={(event)=>{
@@ -24,8 +23,7 @@ export class Modal extends Component {
           <div className="modal-actions">{actions}</div>
         </div> 
       </>
-    )
-  }
+    )  
 }
 Modal.propTypes = {
   header: PropTypes.string,
@@ -34,9 +32,5 @@ Modal.propTypes = {
   onModalClose: PropTypes.func,  
   actions: PropTypes.node.isRequired,
 }
-Modal.propTypes.defaultProps = {
-  header: "Modal window",
-  closeButton: true,
-  onModalClose: ()=>{},
-}
+
 export default Modal

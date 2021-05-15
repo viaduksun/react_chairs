@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Products from './Products';
 import PropTypes from 'prop-types';
 
-export class MainBody extends Component {
-  render() {
-    const {productList, addToCart} = this.props;
+const MainBody = ({productList, addToCart}) => { 
+    
     return (
       <div className="main-body">
         <div className="main-body-text">Our best products</div>
@@ -13,8 +12,7 @@ export class MainBody extends Component {
         </div>
         
       </div>
-    )
-  }
+    )  
 }
 MainBody.propTypes = {
   productList: PropTypes.array,  

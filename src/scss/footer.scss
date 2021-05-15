@@ -1,0 +1,9 @@
+.footer {
+  min-height: 50px;
+  background: #000;
+  & h2 {
+    text-align: center;
+    margin-top: 20px;
+    color: rgb(179, 179, 179);
+  }
+}

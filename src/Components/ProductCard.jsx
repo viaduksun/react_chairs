@@ -1,43 +1,42 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types';
 
-export class ProductCard extends Component {
-  state = {
-    isFavorite: false,
-  }
-  componentDidMount(){
-    const { product }=this.props
-    // console.log("DID MOUNT");
-    if(localStorage.getItem('isFavoriteArrId')) {
-      const isFavorites = localStorage.getItem('isFavoriteArrId').split(',');
-      if(isFavorites.includes(product.id.toString())) {
-      this.setState({ isFavorite: true });
-      }
-    }
-  }
-  componentDidUpdate() {
-    // console.log("DID update");
-  }
-  handleIsFavorite = (id) => {
-    this.setState({ isFavorite: !this.state.isFavorite})
+const ProductCard = ({ product, addToCart, addFavorite, favoritesContent }) => {
 
-    const idStr = id.toString();    
-    if(!localStorage.getItem('isFavoriteArrId')) {
-      localStorage.setItem('isFavoriteArrId', idStr);
-    } else {
-      const localStorArr = localStorage.getItem('isFavoriteArrId').split(',');
-      if(!localStorArr.includes(idStr)) {
-        localStorArr.push(idStr);
-        localStorage.setItem('isFavoriteArrId', localStorArr);
-        // console.log(localStorArr);
-      } else {
-        const newLocalStorArr = localStorArr.filter(item => item !== idStr);
-        localStorage.setItem('isFavoriteArrId', newLocalStorArr); 
-      }  
-    }  
+  const [isFavorite, setIsFavorite] = useState(false);
+  
+ useEffect(() => { 
+  favoritesContent.forEach(item => {
+    if(item.id === product.id) {
+      setIsFavorite(true);
+    }
+  })
+    // if(favoritesContent.includes(product.id.toString())) {
+    //   setIsFavorite(true);
+    // } 
+ }, [product.id]);
+
+  
+  
+  const handleIsFavorite = (id) => {
+    setIsFavorite(!isFavorite);
+    addFavorite(id);
+
+    // const idStr = id.toString();    
+    // if(!localStorage.getItem('isFavoriteArrId')) {
+    //   localStorage.setItem('isFavoriteArrId', idStr);
+    // } else {
+    //   const localStorArr = localStorage.getItem('isFavoriteArrId').split(',');
+    //   if(!localStorArr.includes(idStr)) {
+    //     localStorArr.push(idStr);
+    //     localStorage.setItem('isFavoriteArrId', localStorArr);
+    //     // console.log(localStorArr);
+    //   } else {
+    //     const newLocalStorArr = localStorArr.filter(item => item !== idStr);
+    //     localStorage.setItem('isFavoriteArrId', newLocalStorArr); 
+    //   }  
+    // }  
   }  
-  render() {
-    const { product, addToCart }= this.props;
 
     return (
       <div key={product.id} className="product-card">
@@ -61,8 +60,8 @@ export class ProductCard extends Component {
               </div>
             </div>
             <div className="card-options">              
-              <div onClick={()=> this.handleIsFavorite(product.id)}  className="card-options-favorites">
-                {this.state.isFavorite ? 
+              <div onClick={()=> handleIsFavorite(product.id)}  className="card-options-favorites">
+                {isFavorite ? 
                 <img className="card-options-star" src="./img/star-selected.png" alt="product"/> 
                 : 
                 <img className="card-options-star" src="./img/star.png" alt="product"/>
@@ -73,8 +72,7 @@ export class ProductCard extends Component {
             </div>
           </div>                
       </div>
-    )
-  }
+    )  
 }
 ProductCard.propTypes = {
   product: PropTypes.object.isRequired,

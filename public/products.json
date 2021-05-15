@@ -2,7 +2,7 @@
   [
     { 
       "id": 1,
-      "name": "Компьютерное кресло GTRacerX-0715-blue",
+      "name": "Computer chair GTRacerX-0715-blue",
       "image": "./img/GTRacerX-0715-blue.jpg",
       "color": "blue",
       "price": 18200,
@@ -10,7 +10,7 @@
     },
     { 
       "id": 2,
-      "name": "Компьютерное кресло Special4you ExtremeRace",
+      "name": "Computer chair Special4you ExtremeRace",
       "image": "./img/Special4youExtremeRace-green.jpg",
       "color": "green",
       "price": 15500,
@@ -18,7 +18,7 @@
     },
     { 
       "id": 3,
-      "name": "Компьютерное кресло Hator Hypersport V2",
+      "name": "Computer chair Hator Hypersport V2",
       "image": "./img/HatorHypersportV2-black.jpg",
       "color": "black",
       "price": 7500,
@@ -26,15 +26,15 @@
     },
     { 
       "id": 4,
-      "name": "Компьютерное кресло GT Racer X-2527",
-      "image": "./img/HatorHypersportV2-black.jpg",
-      "color": "black",
+      "name": "Computer chair GT Racer X-2527",
+      "image": "./img/GT-Racer-27-blue.jpg",
+      "color": "blue",
       "price": 9500,
       "article": 782334
     },
     { 
       "id": 5,
-      "name": "Компьютерное кресло Hator Apex",
+      "name": "Computer chair Hator Apex",
       "image": "./img/Hator-apex-yellow.jpg",
       "color": "black",
       "price": 12250,
@@ -42,7 +42,7 @@
     },
     { 
       "id": 6,
-      "name": "Компьютерное кресло Hator Arc",
+      "name": "Computer chair Hator Arc",
       "image": "./img/Hator-arc-brown.jpg",
       "color": "brown",
       "price": 11500,
@@ -50,7 +50,7 @@
     },
     { 
       "id": 7,
-      "name": "Компьютерное кресло Aklas Strik",
+      "name": "Computer chair Aklas Strik",
       "image": "./img/AklasStrik-yellow.jpeg",
       "color": "brown",
       "price": 15700,
@@ -58,15 +58,15 @@
     },
     { 
       "id": 8,
-      "name": "Компьютерное кресло Cougar Armor S",
-      "image": "./img/Hator-arc-brown.jpg",
-      "color": "brown",
+      "name": "Computer chair Cougar Armor S",
+      "image": "./img/CougarArmor-orange.jpg",
+      "color": "orange",
       "price": 17500,
       "article": 442334
     },
     { 
       "id": 9,
-      "name": "Компьютерное кресло Aerocool Duke",
+      "name": "Computer chair Aerocool Duke",
       "image": "./img/9_AerocoolDuke-brown.jpg",
       "color": "brown",
       "price": 14500,
@@ -74,7 +74,7 @@
     },
     { 
       "id": 10,
-      "name": "Компьютерное кресло GT Racer X-2612",
+      "name": "Computer chair GT Racer X-2612",
       "image": "./img/10-RacerX-2612-red.jpg",
       "color": "red",
       "price": 12500,
@@ -82,7 +82,7 @@
     },
     { 
       "id": 11,
-      "name": "Компьютерное кресло GT Racer X-2612",
+      "name": "Computer chair GT Racer X-2612",
       "image": "./img/10-RacerX-2612-blue.jpg",
       "color": "blue",
       "price": 12500,
@@ -90,7 +90,7 @@
     },
     { 
       "id": 12,
-      "name": "Компьютерное кресло GT Racer X-2612",
+      "name": "Computer chair GT Racer X-2612",
       "image": "./img/10-RacerX-2612-green.jpg",
       "color": "green",
       "price": 12500,

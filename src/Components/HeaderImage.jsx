@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react';
 
-export class HeaderImage extends Component {
-  render() {
+const HeaderImage = () => { 
     return (
        <header className="header">
-        <h1>Peace & comfort</h1>
-        <img src="./img/bg3.jpg" alt="header background"/>        
+         <div className="container">
+            <h1>Peace & comfort</h1>
+            <img src="./img/bg4.jpg" alt="header background"/>
+         </div>
       </header> 
-    )
-  }
+    )  
 }
 
 export default HeaderImage
