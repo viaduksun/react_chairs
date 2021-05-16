@@ -57,10 +57,7 @@ const Cart = ({
       ) : (
         <>
           <div className="cart-body-title">Products in cart</div>
-          <div className="cart-products-field">
-            {CartProducts}
-            {/* <Products productList={productList} addToCart={addToCart}/> */}
-          </div>
+          <div className="cart-products-field">{CartProducts}</div>
           <div className="cart-body-footer">
             <div className="cart-body-totalBlock Price">
               <span className="total-title">Total price:</span>

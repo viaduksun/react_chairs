@@ -1,6 +1,6 @@
 import React from 'react';
 
-const HeaderImage = () => { 
+const HeaderTop = () => { 
     return (
        <header className="header">
          <div className="container">
@@ -11,4 +11,4 @@ const HeaderImage = () => {
     )  
 }
 
-export default HeaderImage
+export default HeaderTop

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
-
 import getProducts from "./api/getProducts";
 import Header from "./Components/Header";
-import HeaderImage from "./Components/HeaderImage";
+import HeaderTop from "./Components/HeaderTop";
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import Favorites from "./pages/Favorites";
@@ -11,6 +10,7 @@ import CartModal from "./Components/CartModal";
 import Modal from "./Components/Modal";
 import Footer from "./Components/Footer";
 import Contacts from "./pages/Contacts";
+
 const App = () => {
   const [products, setProducts] = useState([]);
   const [cartContent, setCartContent] = useState([]);
@@ -38,7 +38,6 @@ const App = () => {
     window.addEventListener("scroll", handleScroll);
     const favoritesFromLocal = localStorage.getItem("favorites");
     const cartFromLocal = localStorage.getItem("cart");
-    // console.log("cartFromLocal", cartFromLocal);
     if (favoritesFromLocal) {
       setFavoritesContent(JSON.parse(favoritesFromLocal));
     }
@@ -100,7 +99,6 @@ const App = () => {
     } else {
       newCartArr = [cartProduct, ...cartContent];
     }
-    // console.log("NEW CART", newCartArr);
 
     setCartContent(newCartArr);
     setaddToCartModal({ productId: "", isShown: false });
@@ -134,7 +132,6 @@ const App = () => {
   };
   // ======REMOVE FROM FAVORITES ====================================
   const removeProductFromFavorites = (id) => {
-    console.log("ID to remove FUNC", id);
     const newFavoritesContent = [];
     favoritesContent.forEach((item) => {
       if (item.id !== id) {
@@ -148,13 +145,6 @@ const App = () => {
   const handleAddToCartModal = (productId) => {
     setaddToCartModal({ productId, isShown: true });
   };
-  // =====HIDE MODAL ===========??? (state ?)======================================
-  // const hideModal = () => {
-  //   const modal = document.querySelector(".modal-body");
-  //   const modalCover = document.querySelector(".modal-cover");
-  //   modal.classList.add("modal-hide");
-  //   modalCover.classList.add("modal-cover-hide");
-  // };
   // =====CLOSE MODAL ADD TO CART =============================
   const handleAddToCartModalclose = () => {
     // hideModal();
@@ -166,7 +156,6 @@ const App = () => {
   };
   // =======OPEN MODAL (remove From Favorites) ==================================
   const handleModalRemoveFavoriteOpen = (id) => {
-    console.log("REMOVE favor ID", id);
     setmodalRemoveFromFavorites({ id, isShown: true });
   };
   // ======CLOSE MODAL (removeFromCart) =================================
@@ -176,11 +165,7 @@ const App = () => {
   };
   // =====ADD TO FAVORITE =================================================
   const handleFavorite = (id) => {
-    // const idStr = id.toString();
     const favoriteObject = products.find((product) => product.id === id);
-    console.log("favoriteObject", favoriteObject);
-    console.log("favoritesContent", favoritesContent);
-
     const favorMath = favoritesContent.find((favorite) => favorite.id === id);
     if (favorMath) {
       const newFavorites = favoritesContent.filter((item) => item.id !== id);
@@ -188,7 +173,6 @@ const App = () => {
     } else {
       setFavoritesContent([favoriteObject, ...favoritesContent]);
     }
-    console.log("FAVORITES", favoritesContent);
   };
   // ====PRODUCT AFTER CLICK (for add to cart modal) ============================
   let cartProduct = {};
@@ -242,7 +226,7 @@ const App = () => {
     <div className="wrapper">
       <Switch>
         <Route exact path="/">
-          <HeaderImage />
+          <HeaderTop />
         </Route>
       </Switch>
       <Header
@@ -275,8 +259,8 @@ const App = () => {
           </Route>
           <Route exact path="/favorites">
             <Favorites
-              products={products}
-              removeFavorite={handleModalRemoveFavoriteOpen}
+              addToCart={handleAddToCartModal}
+              addFavorite={handleModalRemoveFavoriteOpen}
               favoritesContent={favoritesContent}
             />
           </Route>
@@ -297,7 +281,8 @@ const App = () => {
       )}
       {modalRemoveFromCart.isShown && (
         <Modal
-          header="Please, confirm deleting from cart"
+          header="Cart editing"
+          text="Please, confirm deleting from cart"
           closeButton={true}
           actions={removeFromCartModalBtns}
           onModalClose={handleModalClose}
@@ -305,7 +290,8 @@ const App = () => {
       )}
       {modalRemoveFromFavorites.isShown && (
         <Modal
-          header="Please, confirm deleting from favorites"
+          header="Favorites editing"
+          text="Please, confirm deleting from favorites"
           closeButton={true}
           actions={removeFromFavoritesModalBtns}
           onModalClose={handleModalClose}

@@ -11,31 +11,14 @@ const ProductCard = ({ product, addToCart, addFavorite, favoritesContent }) => {
       setIsFavorite(true);
     }
   })
-    // if(favoritesContent.includes(product.id.toString())) {
-    //   setIsFavorite(true);
-    // } 
+    
  }, [product.id]);
 
   
   
   const handleIsFavorite = (id) => {
     setIsFavorite(!isFavorite);
-    addFavorite(id);
-
-    // const idStr = id.toString();    
-    // if(!localStorage.getItem('isFavoriteArrId')) {
-    //   localStorage.setItem('isFavoriteArrId', idStr);
-    // } else {
-    //   const localStorArr = localStorage.getItem('isFavoriteArrId').split(',');
-    //   if(!localStorArr.includes(idStr)) {
-    //     localStorArr.push(idStr);
-    //     localStorage.setItem('isFavoriteArrId', localStorArr);
-    //     // console.log(localStorArr);
-    //   } else {
-    //     const newLocalStorArr = localStorArr.filter(item => item !== idStr);
-    //     localStorage.setItem('isFavoriteArrId', newLocalStorArr); 
-    //   }  
-    // }  
+    addFavorite(id);    
   }  
 
     return (

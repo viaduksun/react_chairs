@@ -120,7 +120,11 @@
   padding: 0 30px;
   display: flex;
 }
-
+.modal-text {
+  font-size: 18px;
+  padding: 20px 40px;
+  flex: 1 1 auto;
+}
 .modal-image {
   height: 300px;
   img {

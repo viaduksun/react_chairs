@@ -1,7 +1,4 @@
 import React from "react";
-
-// import MainBody from "../Components/MainBody";
-// import Products from "../Components/Products";
 import ProductCard from "../Components/ProductCard";
 
 const Home = ({ products, addToCart, addFavorite, favoritesContent }) => {
@@ -22,10 +19,7 @@ const Home = ({ products, addToCart, addFavorite, favoritesContent }) => {
       <div className="container">
         <div className="main-body">
           <div className="main-body-text">Our best products</div>
-          <div className="products-field">
-            {ProductList}
-            {/* <Products productList={products} addToCart={addToCart} /> */}
-          </div>
+          <div className="products-field">{ProductList}</div>
         </div>
       </div>
     </>
