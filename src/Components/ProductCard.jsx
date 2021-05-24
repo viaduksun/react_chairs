@@ -1,29 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { openModaladdToCartAction } from '../store/cart/actions';
+import { handleFavorites } from '../store/favorites/actions';
+import CartIcon from './icons/CartIcon';
 
-const ProductCard = ({ product, addToCart, addFavorite, favoritesContent }) => {
+const ProductCard = ({ product }) => {  
+ 
+const inCartContent = useSelector(state => state.cart.cart)
+const inFavoriteContent = useSelector(state => state.favorites)
+  const isInCart = inCartContent.some(item => item.id === product.id);
+  const isInFavorite = inFavoriteContent.some(item => item.id === product.id);
+  const dispatch = useDispatch();
 
-  const [isFavorite, setIsFavorite] = useState(false);
-  
- useEffect(() => { 
-  favoritesContent.forEach(item => {
-    if(item.id === product.id) {
-      setIsFavorite(true);
-    }
-  })
-    
- }, [product.id]);
-
-  
-  
-  const handleIsFavorite = (id) => {
-    setIsFavorite(!isFavorite);
-    addFavorite(id);    
+  const handleIsFavorite = (product) => {    
+    dispatch(handleFavorites(product));    
   }  
 
     return (
       <div key={product.id} className="product-card">
           <div className="card-header">
+            <div className="card-header-icon">{<CartIcon fill={isInCart ? "#9ed681" : "#f0f0f0"} />}</div>
             <img src={product.image} alt={product.name}/>
           </div>
           <div className="card-body">
@@ -43,26 +40,20 @@ const ProductCard = ({ product, addToCart, addFavorite, favoritesContent }) => {
               </div>
             </div>
             <div className="card-options">              
-              <div onClick={()=> handleIsFavorite(product.id)}  className="card-options-favorites">
-                {isFavorite ? 
-                <img className="card-options-star" src="./img/star-selected.png" alt="product"/> 
+              <div onClick={()=> handleIsFavorite(product)}  className="card-options-favorites">
+                {isInFavorite ? 
+                <img className="card-options-star" src="./img/star-selected.png" alt="product-star"/> 
                 : 
-                <img className="card-options-star" src="./img/star.png" alt="product"/>
-                }                
-                <p>Add to favorites</p>
-                </div>
-              <button className="btn btn-add-to-card" onClick={()=> addToCart(product.id)}>Add to card</button>
+                <img className="card-options-star" src="./img/star.png" alt="product-star"/>
+                }   
+                </div>              
+              <button className="btn btn-add-to-card" onClick={()=> dispatch(openModaladdToCartAction(product))}>Add to card</button>
             </div>
           </div>                
       </div>
     )  
 }
 ProductCard.propTypes = {
-  product: PropTypes.object.isRequired,
-  addToCart: PropTypes.func,  
+  product: PropTypes.object.isRequired,  
 }
-// ProductCard.propTypes.defaultProps = {  
-//   addToCart: ()=>{},
-// }
-
 export default ProductCard

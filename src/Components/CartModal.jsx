@@ -1,21 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from "react-redux";
+import { closeModaladdToCartAction } from '../store/cart/actions';
 
-const CartModal = ({header, closeButton, actions, onModalClose, product }) => { 
-   
+const CartModal = ({header, closeButton, actions }) => { 
+  // ====PRODUCT AFTER CLICK (for add to cart modal) ============================ 
+  const product = useSelector((state) => state.cart.clickedProduct); 
+  
+  const dispatch = useDispatch();   
     return (
         <>
           <div className="modal-cover" onClick={(event)=>{
               if (event.target.classList.contains('modal-cover')) {
                 event.target.classList.add('modal-cover-hide')
-                onModalClose()                
+                dispatch(closeModaladdToCartAction())                
               }  
           }}>          
         </div>         
         <div className="modal-body">        
             <div className="modal-header">
-              {closeButton && <div className="modal-close"
-                  onClick={onModalClose}  
+              {closeButton && <div className="modal-close"              
+                  onClick={()=>dispatch(closeModaladdToCartAction())}  
               ></div>}          
               <p>{header}</p>
             </div>
@@ -48,9 +53,7 @@ const CartModal = ({header, closeButton, actions, onModalClose, product }) => {
 
 CartModal.propTypes = {
   header: PropTypes.string.isRequired,
-  closeButton: PropTypes.bool,
-  onModalClose: PropTypes.func,
-  product: PropTypes.object.isRequired,
+  closeButton: PropTypes.bool,  
   actions: PropTypes.node.isRequired,
 }
 // CartModal.propTypes.defaultProps = {

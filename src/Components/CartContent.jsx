@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from 'react-redux';
+import { cartProductRemove } from '../store/cart/actions';
 
-const CartContent = ({ removeProduct, cartContent, onCartIsShown}) => {
-
-  const [cartIds, setCartIds] = useState([]);
-
-  useEffect(() => {
-    setCartIds(localStorage.getItem("inCart"))
-  }, [cartIds]);
+const CartContent = ({ onCartIsShown}) => {
+  
+  const cartFromRedux = useSelector((state) => state.cart.cart);
+  const dispatch = useDispatch();
       
     return (
       <div className="cart-content">        
-        {cartContent.length === 0 ?
+        {cartFromRedux.length === 0 ?
          <div className="cart-item-empty">No items have been added</div> :
          <>
-         {cartContent.map((product)=>(
+         {cartFromRedux.map((product)=>(
            
           <div className="cart-item" key={product.id}>
           <div className="cart-item-img">
@@ -23,7 +21,7 @@ const CartContent = ({ removeProduct, cartContent, onCartIsShown}) => {
           </div>
           <div className="cart-item-text">{product.name}</div>
           <div className="cart-item-count">({product.count})</div>
-          <div className="cart-item-remove" onClick={()=>removeProduct(product.id)}></div>
+          <div className="cart-item-remove" onClick={()=>dispatch(cartProductRemove(product))}></div>
         </div>
         ))} 
           <div className="cart-header-btn-wrapper">
@@ -34,10 +32,6 @@ const CartContent = ({ removeProduct, cartContent, onCartIsShown}) => {
         }  
       </div>
     )  
-}
-CartContent.propTypes = {
-  cartContent: PropTypes.array.isRequired,  
-  removeProduct: PropTypes.func,  
 }
 
 export default CartContent

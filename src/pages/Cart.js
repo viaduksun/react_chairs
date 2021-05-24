@@ -1,14 +1,23 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import EmptyCart from "../Components/icons/EmptyCart";
+import {
+  cartDecrement,
+  cartIncrement,
+  cartModalRemoveOpen,
+} from "../store/cart/actions";
 
-const Cart = ({
-  removeProduct,
-  cartContent,
-  totalCount,
-  totalPrice,
-  increment,
-  decrement,
-}) => {
-  const CartProducts = cartContent.map((product) => (
+const Cart = () => {
+  // ===REDUX================================
+
+  const dispatch = useDispatch();
+  const cartFromRedux = useSelector((state) => state.cart.cart);
+  const totalCount = useSelector((state) => state.cart.totalCount);
+  const totalPrice = useSelector((state) => state.cart.totalPrice);
+  // console.log("cartFromRedux", cartFromRedux);
+  // =================================================================
+
+  const CartProducts = cartFromRedux.map((product) => (
     <div className="cartPage-item" key={product.id}>
       <div className="cartPage-img">
         <img src={product.image} alt="product" />
@@ -26,14 +35,14 @@ const Cart = ({
         <div className="cartPage-counter-block">
           <button
             className="cartPage-btn decrement"
-            onClick={() => decrement(product.id)}
+            onClick={() => dispatch(cartDecrement(product.id))}
           >
             -
           </button>
           <span className="cartPage-productCount">{product.count}</span>
           <button
             className="cartPage-btn increment"
-            onClick={() => increment(product.id)}
+            onClick={() => dispatch(cartIncrement(product.id))}
           >
             +
           </button>
@@ -41,7 +50,7 @@ const Cart = ({
         <button
           className="cartPage-btn-delete"
           onClick={() => {
-            removeProduct(product.id);
+            dispatch(cartModalRemoveOpen(product));
           }}
         >
           Delete from cart
@@ -52,8 +61,11 @@ const Cart = ({
 
   return (
     <div className="cart-body">
-      {cartContent.length === 0 ? (
-        <div className="empty-cart">Your cart is empty</div>
+      {cartFromRedux.length === 0 ? (
+        <div className="empty-cart">
+          Your cart is empty
+          <EmptyCart />
+        </div>
       ) : (
         <>
           <div className="cart-body-title">Products in cart</div>

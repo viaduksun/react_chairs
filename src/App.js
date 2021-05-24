@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
-import getProducts from "./api/getProducts";
+import { Switch, Route, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { loadProducts } from "./store/general/actions";
+import {
+  addToCartAction,
+  closeModaladdToCartAction,
+  setTotalProductCount,
+  setTotalProductPrice,
+  cartModalRemoveClose,
+  cartProductRemove,
+  initialCart,
+} from "./store/cart/actions";
 import Header from "./Components/Header";
 import HeaderTop from "./Components/HeaderTop";
 import Home from "./pages/Home";
@@ -10,65 +20,65 @@ import CartModal from "./Components/CartModal";
 import Modal from "./Components/Modal";
 import Footer from "./Components/Footer";
 import Contacts from "./pages/Contacts";
+import { initialFavorites } from "./store/favorites/actions";
 
 const App = () => {
-  const [products, setProducts] = useState([]);
-  const [cartContent, setCartContent] = useState([]);
-  const [favoritesContent, setFavoritesContent] = useState([]);
+  // const [cartContent, setCartContent] = useState([]);
+  // const [favoritesContent, setFavoritesContent] = useState([]);
   const [headerFixed, setHeaderFixed] = useState(false);
-  const [modalRemoveFromCart, setmodalRemoveFromCart] = useState({
-    isShown: false,
-  });
-  const [modalRemoveFromFavorites, setmodalRemoveFromFavorites] = useState({
-    isShown: false,
-  });
-  const [addToCartModal, setaddToCartModal] = useState({
-    productId: "",
-    isShown: false,
-  });
 
-  const [totalCount, setTotalCount] = useState(null);
-  const [totalPrice, setTotalPrice] = useState(null);
-
+  // ====== REDUX =========================================
+  const dispatch = useDispatch();
+  const productsFromRedux = useSelector((state) => state.general.products);
+  const favoritesFromRedux = useSelector((state) => state.favorites);
+  const cartFromRedux = useSelector((state) => state.cart.cart);
+  const clickedProductIdFromRedux = useSelector(
+    (state) => state.cart.clickedProduct
+  );
+  const addToCartModalIsOpened = useSelector(
+    (state) => state.cart.addToCartModalisOpened
+  );
+  const cartModalRemoveOpen = useSelector(
+    (state) => state.cart.cartModalRemoveOpen
+  );
   // =======USE-EFFECT-GENERAL============================
   useEffect(() => {
-    getProducts().then((productsArr) => {
-      setProducts(productsArr);
-    });
+    // =====Loading products and setting to redux store =================================
+    dispatch(loadProducts());
+
     window.addEventListener("scroll", handleScroll);
     const favoritesFromLocal = localStorage.getItem("favorites");
     const cartFromLocal = localStorage.getItem("cart");
     if (favoritesFromLocal) {
-      setFavoritesContent(JSON.parse(favoritesFromLocal));
+      dispatch(initialFavorites(JSON.parse(favoritesFromLocal)));
     }
     if (cartFromLocal) {
-      setCartContent(JSON.parse(cartFromLocal));
+      dispatch(initialCart(JSON.parse(cartFromLocal)));
     }
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
   // ======USE-EFFECT-favorites================================
   useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify(favoritesContent));
-  }, [favoritesContent]);
+    localStorage.setItem("favorites", JSON.stringify(favoritesFromRedux));
+  }, [favoritesFromRedux]);
   // =======USE-EFFECT-cart===================================
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartContent));
+    localStorage.setItem("cart", JSON.stringify(cartFromRedux));
     // ===TOTAL COUNT====
     let totalCount = 0;
-    cartContent.forEach((item) => {
+    cartFromRedux.forEach((item) => {
       totalCount += item.count;
     });
-    setTotalCount(totalCount);
+    dispatch(setTotalProductCount(totalCount));
     // ===TOTAL PRICE===
     let totalPrice = 0;
-    cartContent.forEach((item) => {
+    cartFromRedux.forEach((item) => {
       totalPrice += item.price * item.count;
     });
-    setTotalPrice(totalPrice);
-  }, [cartContent]);
+    dispatch(setTotalProductPrice(totalPrice));
+  }, [cartFromRedux]);
   // =================================================================
   const handleScroll = () => {
     if (window.scrollY > 500) {
@@ -77,118 +87,19 @@ const App = () => {
       setHeaderFixed(false);
     }
   };
-  // =======ADD TO CART (inside modal)====================================
-  const handleAddToCart = () => {
-    //get id from modal 'Add to cart'
-    const inCartId = addToCartModal.productId;
-    // initial cart product OBJ
-    let cartProduct = products.find((product) => product.id === inCartId);
-    // Adding a new key for initial OBJ = count: 1
-    cartProduct.count = 1;
-
-    let newCartArr = [];
-    // check matches in cart to avoide dublication of products
-    let cartMatches = cartContent.find((item) => item.id === inCartId);
-    if (cartMatches) {
-      newCartArr = cartContent.map((item) => {
-        if (item.id === inCartId) {
-          return { ...item, count: item.count + 1 };
-        }
-        return item;
-      });
-    } else {
-      newCartArr = [cartProduct, ...cartContent];
-    }
-
-    setCartContent(newCartArr);
-    setaddToCartModal({ productId: "", isShown: false });
-  };
-  // =====CART increment ===================================
-  const handleCartIncrement = (id) => {
-    const newCartContent = cartContent.map((item) => {
-      if (item.id === id) {
-        return { ...item, count: item.count + 1 };
-      }
-      return item;
-    });
-    setCartContent(newCartContent);
-  };
-  // =====CART decrement ===================================
-  const handleCartDecrement = (id) => {
-    const newCartContent = cartContent.map((item) => {
-      if (item.id === id && item.count >= 2) {
-        return { ...item, count: item.count - 1 };
-      }
-      return item;
-    });
-    setCartContent(newCartContent);
-  };
-
-  // ======REMOVE FROM CART ====================================
-  const removeProductFromCart = (id) => {
-    const newCartContent = cartContent.filter((product) => product.id !== id);
-    setCartContent(newCartContent);
-    handleModalClose();
-  };
-  // ======REMOVE FROM FAVORITES ====================================
-  const removeProductFromFavorites = (id) => {
-    const newFavoritesContent = [];
-    favoritesContent.forEach((item) => {
-      if (item.id !== id) {
-        newFavoritesContent.push(item);
-      }
-    });
-    setFavoritesContent(newFavoritesContent);
-    handleModalClose();
-  };
-  // =====OPENNING MODAL ADD TO CART =================================
-  const handleAddToCartModal = (productId) => {
-    setaddToCartModal({ productId, isShown: true });
-  };
-  // =====CLOSE MODAL ADD TO CART =============================
-  const handleAddToCartModalclose = () => {
-    // hideModal();
-    setaddToCartModal({ productId: "", isShown: false });
-  };
-  // =======OPEN MODAL (removeFromCar) ==================================
-  const handleModalOpen = (id) => {
-    setmodalRemoveFromCart({ id, isShown: true });
-  };
-  // =======OPEN MODAL (remove From Favorites) ==================================
-  const handleModalRemoveFavoriteOpen = (id) => {
-    setmodalRemoveFromFavorites({ id, isShown: true });
-  };
-  // ======CLOSE MODAL (removeFromCart) =================================
-  const handleModalClose = () => {
-    setmodalRemoveFromCart({ isShown: false });
-    setmodalRemoveFromFavorites({ isShown: false });
-  };
-  // =====ADD TO FAVORITE =================================================
-  const handleFavorite = (id) => {
-    const favoriteObject = products.find((product) => product.id === id);
-    const favorMath = favoritesContent.find((favorite) => favorite.id === id);
-    if (favorMath) {
-      const newFavorites = favoritesContent.filter((item) => item.id !== id);
-      setFavoritesContent(newFavorites);
-    } else {
-      setFavoritesContent([favoriteObject, ...favoritesContent]);
-    }
-  };
-  // ====PRODUCT AFTER CLICK (for add to cart modal) ============================
-  let cartProduct = {};
-  if (addToCartModal.isShown) {
-    cartProduct = products.find(
-      (item) => item.id === +addToCartModal.productId
-    );
-  }
-
   // ======BTN SET (ADD TO CART MODAL)  ==============================
   const addToCartModalBtns = (
     <div className="modal-btn-block">
-      <button className="btn btn-modal" onClick={handleAddToCart}>
+      <button
+        className="btn btn-modal"
+        onClick={() => dispatch(addToCartAction(clickedProductIdFromRedux))}
+      >
         Add to card
       </button>
-      <button className="btn btn-modal" onClick={handleAddToCartModalclose}>
+      <button
+        className="btn btn-modal"
+        onClick={() => dispatch(closeModaladdToCartAction())}
+      >
         Cancel
       </button>
     </div>
@@ -198,71 +109,54 @@ const App = () => {
     <div className="modal-btn-block">
       <button
         className="btn btn-modal"
-        onClick={() => removeProductFromCart(modalRemoveFromCart.id)}
+        onClick={() => dispatch(cartProductRemove(clickedProductIdFromRedux))}
       >
-        Ok
+        Delete
       </button>
-      <button className="btn btn-modal" onClick={handleModalClose}>
+      <button
+        className="btn btn-modal"
+        onClick={() => dispatch(cartModalRemoveClose())}
+      >
         Cancel
       </button>
     </div>
   );
   // ======BTN SET (Remove From Favorites)  ==============================
-  const removeFromFavoritesModalBtns = (
-    <div className="modal-btn-block">
-      <button
-        className="btn btn-modal"
-        onClick={() => removeProductFromFavorites(modalRemoveFromFavorites.id)}
-      >
-        Ok
-      </button>
-      <button className="btn btn-modal" onClick={handleModalClose}>
-        Cancel
-      </button>
-    </div>
-  );
+  // const removeFromFavoritesModalBtns = (
+  //   <div className="modal-btn-block">
+  //     <button
+  //       className="btn btn-modal"
+  //       onClick={() => removeProductFromFavorites(modalRemoveFromFavorites.id)}
+  //     >
+  //       Ok
+  //     </button>
+  //     <button className="btn btn-modal" onClick={null}>
+  //       Cancel
+  //     </button>
+  //   </div>
+  // );
   // =================================================================
+  let location = useLocation();
+  // console.log("LOCATION: ", location);
   return (
     <div className="wrapper">
       <Switch>
+        {/* <Route exact path={location.pathname}> */}
         <Route exact path="/">
           <HeaderTop />
         </Route>
       </Switch>
-      <Header
-        products={products}
-        removeProduct={removeProductFromCart}
-        headerFixed={headerFixed}
-        cartContent={cartContent}
-        cartCounter={totalCount}
-      />
+      <Header products={productsFromRedux} headerFixed={headerFixed} />
       <div className="container">
         <Switch>
           <Route exact path="/">
-            <Home
-              products={products}
-              addToCart={handleAddToCartModal}
-              addFavorite={handleFavorite}
-              favoritesContent={favoritesContent}
-            />
+            <Home products={productsFromRedux} />
           </Route>
           <Route exact path="/cart">
-            <Cart
-              products={products}
-              removeProduct={handleModalOpen}
-              cartContent={cartContent}
-              totalCount={totalCount}
-              totalPrice={totalPrice}
-              increment={handleCartIncrement}
-              decrement={handleCartDecrement}
-            />
+            <Cart products={productsFromRedux} removeProduct={null} />
           </Route>
           <Route exact path="/favorites">
-            <Favorites
-              addToCart={handleAddToCartModal}
-              addFavorite={handleModalRemoveFavoriteOpen}
-              favoritesContent={favoritesContent}
-            />
+            <Favorites />
           </Route>
           <Route exact path="/contacts">
             <Contacts />
@@ -270,31 +164,19 @@ const App = () => {
         </Switch>
       </div>
       <Footer />
-      {addToCartModal.isShown && (
+      {addToCartModalIsOpened && (
         <CartModal
           header="Please, confirm adding to cart this product"
           closeButton={true}
-          product={cartProduct}
           actions={addToCartModalBtns}
-          onModalClose={handleAddToCartModalclose}
         />
       )}
-      {modalRemoveFromCart.isShown && (
+      {cartModalRemoveOpen && (
         <Modal
           header="Cart editing"
-          text="Please, confirm deleting from cart"
+          text="Please, confirm deleting this product from cart"
           closeButton={true}
           actions={removeFromCartModalBtns}
-          onModalClose={handleModalClose}
-        />
-      )}
-      {modalRemoveFromFavorites.isShown && (
-        <Modal
-          header="Favorites editing"
-          text="Please, confirm deleting from favorites"
-          closeButton={true}
-          actions={removeFromFavoritesModalBtns}
-          onModalClose={handleModalClose}
         />
       )}
     </div>
