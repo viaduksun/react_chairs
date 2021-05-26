@@ -10,15 +10,23 @@ import {
   CART_MODAL_REMOVE_OPEN,
   CART_PRODUCT_REMOVE,
   CART_MODAL_REMOVE_CLOSE,
+  CART_CLEAR,
+  MODAL_ORDER_INFO,
+  MODAL_ORDER_INFO_CLOSE,
+  USER_INFO,
+  ORDER_INFO,
 } from "./types";
 
 const initialState = {
   cart: [],
   addToCartModalisOpened: false,
   cartModalRemoveOpen: false,
+  modalOrderInfo: false,
   clickedProduct: {},
   totalCount: null,
   totalPrice: null,
+  userInfo: {},
+  orderInfo: {},
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -92,6 +100,16 @@ const rootReducer = (state = initialState, action) => {
         (product) => product.id !== action.payload.product.id
       );
       return { ...state, cart: newCartProducts, cartModalRemoveOpen: false };
+    case CART_CLEAR:
+      return { ...state, cart: [] };
+    case USER_INFO:
+      return { ...state, userInfo: action.payload.userInfo };
+    case ORDER_INFO:
+      return { ...state, orderInfo: action.payload.orderInfo };
+    case MODAL_ORDER_INFO:
+      return { ...state, modalOrderInfo: true };
+    case MODAL_ORDER_INFO_CLOSE:
+      return { ...state, modalOrderInfo: false };
     default:
       return state;
   }

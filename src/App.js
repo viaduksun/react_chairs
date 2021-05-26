@@ -10,6 +10,7 @@ import {
   cartModalRemoveClose,
   cartProductRemove,
   initialCart,
+  modalOrderInfoClose,
 } from "./store/cart/actions";
 import Header from "./Components/Header";
 import HeaderTop from "./Components/HeaderTop";
@@ -18,6 +19,7 @@ import Cart from "./pages/Cart";
 import Favorites from "./pages/Favorites";
 import CartModal from "./Components/CartModal";
 import Modal from "./Components/Modal";
+import ModalOrderInfo from "./Components/ModalOrderInfo";
 import Footer from "./Components/Footer";
 import Contacts from "./pages/Contacts";
 import { initialFavorites } from "./store/favorites/actions";
@@ -41,6 +43,7 @@ const App = () => {
   const cartModalRemoveOpen = useSelector(
     (state) => state.cart.cartModalRemoveOpen
   );
+  const cartModalOrderInfo = useSelector((state) => state.cart.modalOrderInfo);
   // =======USE-EFFECT-GENERAL============================
   useEffect(() => {
     // =====Loading products and setting to redux store =================================
@@ -121,6 +124,17 @@ const App = () => {
       </button>
     </div>
   );
+  // ======BTN SET (cartModalOrderInfoBtns)  ==============================
+  const cartModalOrderInfoBtns = (
+    <div className="modal-btn-block">
+      <button
+        className="btn btn-modal"
+        onClick={() => dispatch(modalOrderInfoClose())}
+      >
+        Ok
+      </button>
+    </div>
+  );
   // ======BTN SET (Remove From Favorites)  ==============================
   // const removeFromFavoritesModalBtns = (
   //   <div className="modal-btn-block">
@@ -178,6 +192,9 @@ const App = () => {
           closeButton={true}
           actions={removeFromCartModalBtns}
         />
+      )}
+      {cartModalOrderInfo && (
+        <ModalOrderInfo closeButton={true} actions={cartModalOrderInfoBtns} />
       )}
     </div>
   );

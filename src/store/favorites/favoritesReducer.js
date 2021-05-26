@@ -7,12 +7,7 @@ const favoritesReducer = (state = initialState, action) => {
     case INITIAL_FAVORITES:
       return action.payload;
     case SET_FAVORITES:
-      // console.log("SET_FAVORITES", action.payload);
-      // console.log("STATE:", state);
-      // const existFavoritesArr = state.favorites;
       const newFavorite = action.payload;
-      // console.log("newFavorite", newFavorite);
-      // console.log("existFavoritesArr", existFavoritesArr);
       if (state.length === 0) {
         return [newFavorite];
       } else {

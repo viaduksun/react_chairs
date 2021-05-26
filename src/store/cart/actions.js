@@ -42,3 +42,30 @@ export const cartProductRemove = (product) => ({
   type: type.CART_PRODUCT_REMOVE,
   payload: { product: product },
 });
+export const cartClear = () => ({
+  type: type.CART_CLEAR,
+});
+export const userInfo = (userData) => ({
+  type: type.USER_INFO,
+  payload: { userInfo: userData },
+});
+export const orderInfo = (orderData) => ({
+  type: type.ORDER_INFO,
+  payload: { orderInfo: orderData },
+});
+export const modalOrderInfoIsShown = () => ({
+  type: type.MODAL_ORDER_INFO,
+});
+export const modalOrderInfoClose = () => ({
+  type: type.MODAL_ORDER_INFO_CLOSE,
+});
+
+export const checkout = (userData, orderData) => (dispatch) => {
+  dispatch(cartClear());
+  dispatch(userInfo(userData));
+  dispatch(orderInfo(orderData));
+  dispatch(modalOrderInfoIsShown());
+  localStorage.removeItem("cart");
+  console.log("User data: ", userData);
+  console.log("Order data: ", orderData);
+};
