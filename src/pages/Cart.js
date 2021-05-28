@@ -102,10 +102,10 @@ const Cart = () => {
 
   const validate = Yup.object({
     firstName: Yup.string()
-      .max(6, "Must be 10 characters or less")
+      .max(10, "Must be 10 characters or less")
       .required("First name is required"),
     lastName: Yup.string()
-      .max(20, "Must be 10 characters or less")
+      .max(20, "Must be 20 characters or less")
       .required("Last name is required"),
     age: Yup.number()
       .max(99, "Must be 2 characters or less")
