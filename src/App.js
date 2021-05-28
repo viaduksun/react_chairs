@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { loadProducts } from "./store/general/actions";
 import {
@@ -9,8 +9,8 @@ import {
   setTotalProductPrice,
   cartModalRemoveClose,
   cartProductRemove,
-  initialCart,
   modalOrderInfoClose,
+  initialCart,
 } from "./store/cart/actions";
 import Header from "./Components/Header";
 import HeaderTop from "./Components/HeaderTop";
@@ -25,8 +25,6 @@ import Contacts from "./pages/Contacts";
 import { initialFavorites } from "./store/favorites/actions";
 
 const App = () => {
-  // const [cartContent, setCartContent] = useState([]);
-  // const [favoritesContent, setFavoritesContent] = useState([]);
   const [headerFixed, setHeaderFixed] = useState(false);
 
   // ====== REDUX =========================================
@@ -58,10 +56,11 @@ const App = () => {
     if (cartFromLocal) {
       dispatch(initialCart(JSON.parse(cartFromLocal)));
     }
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [dispatch]);
   // ======USE-EFFECT-favorites================================
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favoritesFromRedux));
@@ -81,7 +80,7 @@ const App = () => {
       totalPrice += item.price * item.count;
     });
     dispatch(setTotalProductPrice(totalPrice));
-  }, [cartFromRedux]);
+  }, [cartFromRedux, dispatch]);
   // =================================================================
   const handleScroll = () => {
     if (window.scrollY > 500) {
@@ -135,23 +134,7 @@ const App = () => {
       </button>
     </div>
   );
-  // ======BTN SET (Remove From Favorites)  ==============================
-  // const removeFromFavoritesModalBtns = (
-  //   <div className="modal-btn-block">
-  //     <button
-  //       className="btn btn-modal"
-  //       onClick={() => removeProductFromFavorites(modalRemoveFromFavorites.id)}
-  //     >
-  //       Ok
-  //     </button>
-  //     <button className="btn btn-modal" onClick={null}>
-  //       Cancel
-  //     </button>
-  //   </div>
-  // );
-  // =================================================================
-  let location = useLocation();
-  // console.log("LOCATION: ", location);
+
   return (
     <div className="wrapper">
       <Switch>

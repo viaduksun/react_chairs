@@ -17,6 +17,10 @@ const rootReducer = combineReducers({
 
 const store = createStore(
   rootReducer,
+  // {
+  //   favorites: JSON.parse(localStorage.getItem("favorites")),
+  //   cart: { cart: cartFromLocalStorage },
+  // },
   compose(applyMiddleware(thunk), devTools)
 );
 

@@ -39,7 +39,7 @@ const ModalOrderInfo = ({ closeButton, text, actions }) => {
           </div>
           <div className="order-data-item">
             <p className="order-data-key">Second name:</p>
-            <p className="order-data-value">{userInfo.secondName}</p>
+            <p className="order-data-value">{userInfo.lastName}</p>
           </div>
           <div className="order-data-item">
             <p className="order-data-key">Age:</p>

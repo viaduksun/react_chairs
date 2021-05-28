@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
-import Checked from "../Components/icons/Checked";
+
 import EmptyCart from "../Components/icons/EmptyCart";
 import {
   cartDecrement,
@@ -8,6 +10,7 @@ import {
   cartModalRemoveOpen,
   checkout,
 } from "../store/cart/actions";
+import TextInput from "../Components/TextInput";
 
 const Cart = () => {
   // ===REDUX================================
@@ -18,88 +21,43 @@ const Cart = () => {
   const totalPrice = useSelector((state) => state.cart.totalPrice);
   // console.log("cartFromRedux", cartFromRedux);
   // =================================================================
+
   const orderArr = cartFromRedux.map((item) => {
     let tempItem = {};
     tempItem[item.name] = item.count;
     return tempItem;
   });
+
   const orderObj = orderArr.reduce(function (result, current) {
     return Object.assign(result, current);
   }, {});
-  // console.log("orderArr", orderArr);
-  // console.log("orderObj", orderObj);
   orderObj.totalCount = totalCount;
   orderObj.totalPrice = totalPrice;
-  const [values, setValues] = useState({
-    firstName: "",
-    secondName: "",
-    age: "",
-    address: "",
-    phone: "",
-  });
-  const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({
-    firstName: false,
-    secondName: false,
-    age: false,
-    address: false,
-    phone: false,
-  });
-  const handleChange = (event) => {
-    const name = event.target.name;
-    setValues((values) => ({ ...values, [name]: event.target.value }));
-  };
-  const handleBlur = (event) => {
-    const name = event.target.name;
-    setTouched((touched) => ({ ...touched, [name]: true }));
-  };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const { firstName, secondName, age, address, phone } = values;
+  const handleSubmitForm = (values, { setSubmitting }) => {
+    const { firstName, lastName, age, address, email, phone } = values;
     // const isPasswordMatch = newPassword === confirmPassword;
-    const isFormValid = firstName && secondName && age && address && phone;
+    const isFormValid =
+      firstName && lastName && age && address && email && phone;
 
     if (isFormValid) {
-      const form = {
-        firstName: values.firstName,
-        secondName: values.secondName,
-        age: values.age,
-        address: values.address,
-        phone: values.phone,
-      };
+      setSubmitting(true);
 
-      localStorage.setItem("form", JSON.stringify(form));
-      dispatch(checkout(form, orderObj));
-    } else {
-      setErrors((errors) => ({
-        ...errors,
-        generalForm: "Please, fill the form correctly",
-      }));
+      setTimeout(() => {
+        setSubmitting(false);
+        const form = {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          age: values.age,
+          address: values.address,
+          phone: values.phone,
+        };
+
+        dispatch(checkout(form, orderObj));
+      }, 2000);
     }
   };
-  const validateFields = () => {
-    const { firstName, secondName, age, address, phone } = values;
-    setErrors({});
-    if (!firstName) {
-      setErrors((errors) => ({ ...errors, firstName: "Empty firstName" }));
-    }
-    if (!secondName) {
-      setErrors((errors) => ({ ...errors, secondName: "Empty secondName" }));
-    }
-    if (!age) {
-      setErrors((errors) => ({ ...errors, age: "Empty age" }));
-    }
-    if (!address) {
-      setErrors((errors) => ({ ...errors, address: "Empty address" }));
-    }
-    if (!phone) {
-      setErrors((errors) => ({ ...errors, phone: "Empty phone" }));
-    }
-  };
-  useEffect(() => {
-    validateFields();
-  }, [values]);
+
   const CartProducts = cartFromRedux.map((product) => (
     <div className="cartPage-item" key={product.id}>
       <div className="cartPage-img">
@@ -142,6 +100,25 @@ const Cart = () => {
     </div>
   ));
 
+  const validate = Yup.object({
+    firstName: Yup.string()
+      .max(6, "Must be 10 characters or less")
+      .required("First name is required"),
+    lastName: Yup.string()
+      .max(20, "Must be 10 characters or less")
+      .required("Last name is required"),
+    age: Yup.number()
+      .max(99, "Must be 2 characters or less")
+      .required("Age is required"),
+    address: Yup.string()
+      .max(40, "Must be 40 characters or less")
+      .required("Address is required"),
+    email: Yup.string().email("Email is invalid").required("Email is required"),
+    phone: Yup.string()
+      .max(15, "Must be 15 characters or less")
+      .required("Phone is required"),
+  });
+
   return (
     <div className="cart-body">
       {cartFromRedux.length === 0 ? (
@@ -167,131 +144,190 @@ const Cart = () => {
             <h2 className="cart-form-header">
               Please, fill the form to confirm your order
             </h2>
-            <form className="cart-form" onSubmit={handleSubmit}>
-              <div className="cart-inputs-area">
-                <div className="cart-input-form-block">
-                  <div className="cart-input-label-group">
-                    <label className="form-label" htmlFor="firstName">
-                      Your first name
-                    </label>
-                    <input
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.firstName}
-                      className={`form-control-input ${
-                        touched.firstName && !errors.firstName && `valid`
-                      }`}
-                      name="firstName"
-                      id="firstName"
-                      type="text"
-                    />
-                  </div>
-                  {touched.firstName && errors.firstName && (
-                    <div className="form-error">{errors.firstName}</div>
-                  )}
-                  {touched.firstName && !errors.firstName && <Checked />}
-                </div>
-                <div className="cart-input-form-block">
-                  <div className="cart-input-label-group">
-                    <label className="form-label" htmlFor="secondName">
-                      Your second name
-                    </label>
-                    <input
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.secondName}
-                      className={`form-control-input ${
-                        touched.secondName && !errors.secondName && `valid`
-                      }`}
-                      name="secondName"
-                      id="secondName"
-                      type="text"
-                    />
-                  </div>
-                  {touched.secondName && errors.secondName && (
-                    <div className="form-error">{errors.secondName}</div>
-                  )}
-                  {touched.secondName && !errors.secondName && <Checked />}
-                </div>
+            <Formik
+              initialValues={{
+                firstName: "",
+                lastName: "",
+                age: "",
+                address: "",
+                email: "",
+                phone: "",
+              }}
+              onSubmit={handleSubmitForm}
+              validationSchema={validate}
+            >
+              {(formik) => {
+                return (
+                  <Form className="cart-form">
+                    <div className="cart-inputs-area">
+                      <TextInput
+                        label="First name"
+                        name="firstName"
+                        type="text"
+                      />
+                      <TextInput
+                        label="Last name"
+                        name="lastName"
+                        type="text"
+                      />
+                      <TextInput label="Age" name="age" type="number" />
+                      <TextInput label="Address" name="address" type="text" />
+                      <TextInput label="Email" name="email" type="email" />
+                      <TextInput label="Phone" name="phone" type="text" />
+                      {/* <div className="cart-input-form-block">
+                        
+                        <div className="cart-input-label-group">
+                          <label className="form-label" htmlFor="firstName">
+                            Your first name
+                          </label>
+                          <input
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.firstName}
+                            className={`form-control-input ${
+                              touched.firstName && !errors.firstName && `valid`
+                            }`}
+                            name="firstName"
+                            id="firstName"
+                            type="text"
+                          />
+                        </div>
+                        {touched.firstName && errors.firstName && (
+                          <div className="form-error">{errors.firstName}</div>
+                        )}
+                        {touched.firstName && !errors.firstName && <Checked />}
+                      </div>
+                      <div className="cart-input-form-block">
+                        <div className="cart-input-label-group">
+                          <label className="form-label" htmlFor="secondName">
+                            Your second name
+                          </label>
+                          <input
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.secondName}
+                            className={`form-control-input ${
+                              touched.secondName &&
+                              !errors.secondName &&
+                              `valid`
+                            }`}
+                            name="secondName"
+                            id="secondName"
+                            type="text"
+                          />
+                        </div>
+                        {touched.secondName && errors.secondName && (
+                          <div className="form-error">{errors.secondName}</div>
+                        )}
+                        {touched.secondName && !errors.secondName && (
+                          <Checked />
+                        )}
+                      </div>
 
-                <div className="cart-input-form-block">
-                  <div className="cart-input-label-group">
-                    <label className="form-label" htmlFor="age">
-                      Your age
-                    </label>
-                    <input
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.age}
-                      className={`form-control-input ${
-                        touched.age && !errors.age && `valid`
-                      }`}
-                      name="age"
-                      id="age"
-                      type="text"
-                    />
-                  </div>
-                  {touched.age && errors.age && (
-                    <div className="form-error">{errors.age}</div>
-                  )}
-                  {touched.age && !errors.age && <Checked />}
-                </div>
+                      <div className="cart-input-form-block">
+                        <div className="cart-input-label-group">
+                          <label className="form-label" htmlFor="age">
+                            Your age
+                          </label>
+                          <input
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.age}
+                            className={`form-control-input ${
+                              touched.age && !errors.age && `valid`
+                            }`}
+                            name="age"
+                            id="age"
+                            type="text"
+                          />
+                        </div>
+                        {touched.age && errors.age && (
+                          <div className="form-error">{errors.age}</div>
+                        )}
+                        {touched.age && !errors.age && <Checked />}
+                      </div>
 
-                <div className="cart-input-form-block">
-                  <div className="cart-input-label-group">
-                    <label className="form-label" htmlFor="address">
-                      Delivery address
-                    </label>
-                    <input
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.address}
-                      className={`form-control-input ${
-                        touched.address && !errors.address && `valid`
-                      }`}
-                      name="address"
-                      id="address"
-                      type="text"
-                    />
-                  </div>
-                  {touched.address && errors.address && (
-                    <div className="form-error">{errors.address}</div>
-                  )}
-                  {touched.address && !errors.address && <Checked />}
-                </div>
+                      <div className="cart-input-form-block">
+                        <div className="cart-input-label-group">
+                          <label className="form-label" htmlFor="address">
+                            Delivery address
+                          </label>
+                          <input
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.address}
+                            className={`form-control-input ${
+                              touched.address && !errors.address && `valid`
+                            }`}
+                            name="address"
+                            id="address"
+                            type="text"
+                          />
+                        </div>
+                        {touched.address && errors.address && (
+                          <div className="form-error">{errors.address}</div>
+                        )}
+                        {touched.address && !errors.address && <Checked />}
+                      </div>
 
-                <div className="cart-input-form-block">
-                  <div className="cart-input-label-group">
-                    <label className="form-label" htmlFor="phone">
-                      Your cell phone number
-                    </label>
-                    <input
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.phone}
-                      className={`form-control-input ${
-                        touched.phone && !errors.phone && `valid`
-                      }`}
-                      name="phone"
-                      id="phone"
-                      type="text"
-                    />
-                  </div>
-                  {touched.phone && errors.phone && (
-                    <div className="form-error">{errors.phone}</div>
-                  )}
-                  {touched.phone && !errors.phone && <Checked />}
-                </div>
-              </div>
-              {errors.generalForm && (
-                <div className="form-error">{errors.generalForm}</div>
-              )}
-              <button className="btn cart-body-order">Checkout</button>
-            </form>
+                      <div className="cart-input-form-block">
+                        <div className="cart-input-label-group">
+                          <label className="form-label" htmlFor="phone">
+                            Your cell phone number
+                          </label>
+                          <input
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.phone}
+                            className={`form-control-input ${
+                              touched.phone && !errors.phone && `valid`
+                            }`}
+                            name="phone"
+                            id="phone"
+                            type="text"
+                          />
+                        </div>
+                        {touched.phone && errors.phone && (
+                          <div className="form-error">{errors.phone}</div>
+                        )}
+                        {touched.phone && !errors.phone && <Checked />}
+                      </div> */}
+                    </div>
+                    {/* {errors.generalForm && (
+                      <div className="form-error">{errors.generalForm}</div>
+                    )} */}
+                    <div className="form-btn-group">
+                      <button
+                        type="submit"
+                        className="btn cart-body-order"
+                        // disabled={isSubmitting}
+                      >
+                        Checkout
+                      </button>
+                      <button
+                        type="reset"
+                        className="btn cart-body-order reset"
+                      >
+                        Reset
+                      </button>
+                    </div>
+                  </Form>
+                );
+              }}
+            </Formik>
           </div>
         </>
       )}
     </div>
   );
 };
+// {
+//   values,
+//   errors,
+//   touched,
+//   isSubmitting,
+//   handleChange,
+//   handleBlur,
+//   handleSubmit,
+// }
 export default Cart;
