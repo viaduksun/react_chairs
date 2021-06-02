@@ -23,6 +23,7 @@ import ModalOrderInfo from "./Components/ModalOrderInfo";
 import Footer from "./Components/Footer";
 import Contacts from "./pages/Contacts";
 import { initialFavorites } from "./store/favorites/actions";
+import Button from "./Components/Button";
 
 const App = () => {
   const [headerFixed, setHeaderFixed] = useState(false);
@@ -92,46 +93,41 @@ const App = () => {
   // ======BTN SET (ADD TO CART MODAL)  ==============================
   const addToCartModalBtns = (
     <div className="modal-btn-block">
-      <button
-        className="btn btn-modal"
+      <Button
+        addClass="btn-modal"
         onClick={() => dispatch(addToCartAction(clickedProductIdFromRedux))}
-      >
-        Add to card
-      </button>
-      <button
-        className="btn btn-modal"
+        text="Add to card"
+      />
+      <Button
+        addClass="btn-modal"
         onClick={() => dispatch(closeModaladdToCartAction())}
-      >
-        Cancel
-      </button>
+        text="Cancel"
+      />
     </div>
   );
   // ======BTN SET (RemoveFromCart)  ==============================
   const removeFromCartModalBtns = (
     <div className="modal-btn-block">
-      <button
-        className="btn btn-modal"
+      <Button
+        addClass="btn-modal"
         onClick={() => dispatch(cartProductRemove(clickedProductIdFromRedux))}
-      >
-        Delete
-      </button>
-      <button
-        className="btn btn-modal"
+        text="Delete"
+      />
+      <Button
+        addClass="btn-modal"
         onClick={() => dispatch(cartModalRemoveClose())}
-      >
-        Cancel
-      </button>
+        text="Cancel"
+      />
     </div>
   );
   // ======BTN SET (cartModalOrderInfoBtns)  ==============================
   const cartModalOrderInfoBtns = (
     <div className="modal-btn-block">
-      <button
-        className="btn btn-modal"
+      <Button
+        addClass="btn-modal"
         onClick={() => dispatch(modalOrderInfoClose())}
-      >
-        Ok
-      </button>
+        text="Ok"
+      />
     </div>
   );
 
